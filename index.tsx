@@ -116,7 +116,7 @@ const ExamView = ({ questions, onFinish }) => {
                 finalScore += 2;
             }
         });
-        onFinish(finalScore);
+        onFinish({ score: finalScore, questions: examQuestions, answers: userAnswers });
     }, [examQuestions, userAnswers, onFinish]);
 
     useEffect(() => {
@@ -228,7 +228,9 @@ const ExamView = ({ questions, onFinish }) => {
 };
 
 // --- Result View Component ---
-const ResultView = ({ score, totalQuestions, onRetake, onLoadNew }) => {
+const ResultView = ({ score, totalQuestions, onRetake, onLoadNew, examData }) => {
+    const { questions: examQuestions, answers: userAnswers } = examData;
+
     return (
         <div className="app-container">
             <header className="app-header">Exam Result</header>
@@ -245,6 +247,33 @@ const ResultView = ({ score, totalQuestions, onRetake, onLoadNew }) => {
                         <button onClick={onLoadNew} className="btn">Load New Exam</button>
                     </div>
                 </div>
+                
+                <div className="result-details">
+                    <h3>Question Review</h3>
+                    {examQuestions.map((q, index) => (
+                        <div key={q.id} className="result-question-card">
+                            <p className="question-text">{index + 1}. {q.question}</p>
+                            <ul className="options-list">
+                                {q.options.map((option, optIndex) => {
+                                    const isCorrect = optIndex === q.correct;
+                                    const isUserChoice = userAnswers[q.id] === optIndex;
+                                    let className = 'result-option';
+                                    if (isCorrect) {
+                                        className += ' correct';
+                                    } else if (isUserChoice) {
+                                        className += ' incorrect';
+                                    }
+                                    return (
+                                        <li key={optIndex} className={className}>
+                                            <span>{option}</span>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+
             </div>
         </div>
     );
@@ -255,27 +284,29 @@ const App = () => {
     const [appState, setAppState] = useState('upload'); // 'upload', 'exam', 'result'
     const [questions, setQuestions] = useState([]);
     const [finalScore, setFinalScore] = useState(0);
+    const [lastExamData, setLastExamData] = useState({ questions: [], answers: {} });
 
     const handleUploadSuccess = (uploadedQuestions) => {
         setQuestions(uploadedQuestions);
         setAppState('exam');
     };
 
-    const handleFinishExam = (score) => {
+    const handleFinishExam = ({ score, questions, answers }) => {
         setFinalScore(score);
+        setLastExamData({ questions, answers });
         setAppState('result');
     };
     
     const handleRetake = () => {
-        // Reset score and go back to exam. Questions are already loaded.
         setFinalScore(0);
+        setLastExamData({ questions: [], answers: {} });
         setAppState('exam');
     };
 
     const handleLoadNew = () => {
-        // Reset everything and go back to upload screen
         setQuestions([]);
         setFinalScore(0);
+        setLastExamData({ questions: [], answers: {} });
         setAppState('upload');
     };
 
@@ -288,8 +319,8 @@ const App = () => {
     }
 
     if (appState === 'result') {
-        const totalQuestions = Math.min(50, questions.length);
-        return <ResultView score={finalScore} totalQuestions={totalQuestions} onRetake={handleRetake} onLoadNew={handleLoadNew} />;
+        const totalQuestions = lastExamData.questions.length || Math.min(50, questions.length);
+        return <ResultView score={finalScore} totalQuestions={totalQuestions} onRetake={handleRetake} onLoadNew={handleLoadNew} examData={lastExamData} />;
     }
 
     return <div>Loading App...</div>;

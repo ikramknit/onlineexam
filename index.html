@@ -225,7 +225,7 @@
         }
 
 
-        .exam-content, .result-content {
+        .exam-content {
             padding: 1.5rem;
         }
 
@@ -314,7 +314,9 @@
         }
 
         .result-content {
-            padding: 1rem;
+            padding: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
         }
         
         .result-summary {
@@ -358,6 +360,44 @@
         }
         .btn-retake:hover {
             background-color: #218838;
+        }
+        
+        .result-details {
+            margin-top: 3rem;
+            text-align: left;
+        }
+        .result-details h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        .result-question-card {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+        .result-option {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            list-style-type: none;
+        }
+        .result-option.correct {
+            background-color: #e9f7ec;
+            border-color: var(--correct-color);
+            color: #155724;
+            font-weight: bold;
+        }
+        .result-option.incorrect {
+            background-color: #fbebed;
+            border-color: var(--incorrect-color);
+            color: #721c24;
+            font-weight: bold;
         }
 
     </style>
