@@ -8,12 +8,14 @@
         :root {
             --primary-color: #007bff;
             --primary-hover: #0056b3;
-            --light-bg: #f8f9fa;
+            --light-bg: #f0f2f5;
             --dark-text: #333;
             --border-color: #dee2e6;
             --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
             --correct-color: #28a745;
             --incorrect-color: #dc3545;
+            --not-answered-color: #6c757d;
+            --current-question-color: #007bff;
         }
 
         body {
@@ -21,49 +23,222 @@
             margin: 0;
             background-color: var(--light-bg);
             color: var(--dark-text);
-            display: flex;
-            justify-content: center;
             line-height: 1.6;
         }
 
         #root {
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .app-container {
-            background-color: white;
-            margin: 1rem;
-            border-radius: 8px;
-            box-shadow: var(--card-shadow);
-            overflow: hidden;
+            background-color: transparent;
+            margin: 0;
+            box-shadow: none;
         }
 
-        .app-header {
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .upload-card {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            max-width: 600px;
+        }
+
+        .upload-card h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: var(--dark-text);
+        }
+
+        .upload-card p {
+            margin-bottom: 1.5rem;
+            color: #6c757d;
+        }
+        
+        .file-input-label {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
             background-color: var(--primary-color);
             color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .file-input-label:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+
+        .excel-format-hint {
+            margin-top: 2rem;
+            text-align: left;
+            background-color: var(--light-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .excel-format-hint h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        .excel-format-hint code {
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+
+        .app-header {
+            background-color: #fff;
+            color: var(--dark-text);
             padding: 1rem 1.5rem;
             text-align: center;
             font-size: 1.5rem;
             font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        .exam-view {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        @media (min-width: 992px) {
+            .exam-view {
+                grid-template-columns: 2.5fr 1fr;
+            }
+        }
+        
+        .question-area {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+        }
+
+        .sidebar-area {
+            position: sticky;
+            top: 1rem;
+            height: fit-content;
+        }
+
+        .sidebar-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+            padding: 1rem;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-palette h4 {
+            margin-top: 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .palette-legend {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+        
+        .palette-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .palette-item:hover {
+            transform: scale(1.1);
+        }
+        .palette-item.not-answered {
+             background-color: #f8f9fa;
+             color: var(--dark-text);
+        }
+        .palette-item.answered {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+        .palette-item.current {
+            background-color: var(--current-question-color);
+            color: white;
+            border-color: var(--current-question-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+        }
+
 
         .exam-content, .result-content {
             padding: 1.5rem;
         }
 
         .question-card {
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #fff;
+            border: none;
+            padding: 0;
+            margin: 0;
         }
         
         .question-text {
             font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
         }
 
         .options-list {
@@ -92,17 +267,21 @@
         }
         
         .option-item label:hover {
-            background-color: #f1f1f1;
+            background-color: #e9ecef;
         }
 
         .option-item input[type="radio"]:checked + span {
             font-weight: bold;
             color: var(--primary-color);
         }
-
-        .button-container {
-            text-align: center;
-            padding: 1rem 1.5rem 1.5rem;
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
         }
 
         .btn {
@@ -110,31 +289,42 @@
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            min-width: 150px;
+            transition: background-color 0.2s, opacity 0.2s;
         }
 
         .btn:hover {
             background-color: var(--primary-hover);
         }
         
-        .btn-retake {
-            background-color: var(--correct-color);
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
-        .btn-retake:hover {
-            background-color: #218838;
+        
+        .btn-finish {
+            background-color: var(--incorrect-color);
+        }
+        .btn-finish:hover {
+            background-color: #c82333;
         }
 
+        .result-content {
+            padding: 1rem;
+        }
+        
         .result-summary {
             text-align: center;
             padding: 2rem;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background-color: #fff;
+            max-width: 600px;
+            margin: 2rem auto;
         }
         
         .result-summary h2 {
@@ -161,6 +351,14 @@
             color: var(--incorrect-color);
             font-weight: bold;
         }
+        
+        .btn-retake {
+            background-color: var(--correct-color);
+            margin-right: 1rem;
+        }
+        .btn-retake:hover {
+            background-color: #218838;
+        }
 
     </style>
 <script type="importmap">
@@ -168,7 +366,8 @@
   "imports": {
     "react": "https://esm.sh/react@^19.1.1",
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
-    "react/": "https://esm.sh/react@^19.1.1/"
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "xlsx": "https://esm.sh/xlsx@0.18.5"
   }
 }
 </script>
