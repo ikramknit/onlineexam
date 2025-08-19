@@ -38,6 +38,67 @@
             box-shadow: none;
         }
 
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+        }
+        
+        /* --- Login View Styles --- */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            padding: 2rem;
+        }
+        .login-card {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+        }
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .student-link {
+            display: block;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .student-link:hover {
+            text-decoration: underline;
+        }
+        /* --- End Login Styles --- */
+
         .upload-container {
             display: flex;
             flex-direction: column;
@@ -54,6 +115,8 @@
             border-radius: 8px;
             box-shadow: var(--card-shadow);
             max-width: 600px;
+            width: 100%;
+            position: relative;
         }
 
         .upload-card h2 {
@@ -79,6 +142,11 @@
         }
         .file-input-label:hover {
             background-color: var(--primary-hover);
+        }
+        .file-input-label.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
         
         input[type="file"] {
@@ -114,7 +182,15 @@
             font-weight: 600;
             border-bottom: 1px solid var(--border-color);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        .app-header-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+
 
         .exam-view {
             display: grid;
@@ -312,6 +388,33 @@
         .btn-finish:hover {
             background-color: #c82333;
         }
+        
+        .btn-secondary {
+            background-color: var(--not-answered-color);
+        }
+        .btn-secondary:hover {
+             background-color: #5a6268;
+        }
+        
+        .btn-logout {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        .btn-logout:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
 
         .result-content {
             padding: 1.5rem;
@@ -399,6 +502,69 @@
             color: #721c24;
             font-weight: bold;
         }
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-text);
+            padding: 0.5rem;
+            line-height: 1;
+        }
+        .back-button:hover {
+            color: var(--primary-color);
+        }
+        
+        /* --- Manage Questions Styles --- */
+        .manage-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        .question-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .question-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .question-list-item:last-child {
+            border-bottom: none;
+        }
+        .question-list-item p {
+            margin: 0;
+            flex-grow: 1;
+            padding-right: 1rem;
+        }
+        .delete-btn {
+            background-color: var(--incorrect-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .delete-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
 
     </style>
 <script type="importmap">
@@ -407,7 +573,8 @@
     "react": "https://esm.sh/react@^19.1.1",
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
     "react/": "https://esm.sh/react@^19.1.1/",
-    "xlsx": "https://esm.sh/xlsx@0.18.5"
+    "xlsx": "https://esm.sh/xlsx@0.18.5",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
   }
 }
 </script>
